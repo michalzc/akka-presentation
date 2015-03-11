@@ -12,7 +12,8 @@ lazy val commonSettings = Seq(
     Resolver.sonatypeRepo("public")
   ),
   libraryDependencies ++= Seq(
-    "com.typesafe.akka" %% "akka-actor" % akkaVersion
+    "com.typesafe.akka" %% "akka-actor" % akkaVersion,
+    "com.typesafe.akka" %% "akka-slf4j" % akkaVersion
   )
 )
 
@@ -23,6 +24,9 @@ lazy val javaAkka = (project in file("java-akka"))
     name := "Java akka project",
     libraryDependencies ++= Seq(
       "org.springframework.boot" % "spring-boot-starter-web" % springBootVersion,
-      "org.springframework.boot" % "spring-boot-starter-data-mongodb" % springBootVersion
+      "org.springframework.boot" % "spring-boot-starter-data-mongodb" % springBootVersion,
+      "com.google.guava" % "guava" % "18.0",
+      "org.projectlombok" % "lombok" % "1.16.2",
+      "commons-io" % "commons-io" % "2.4"
     )
   )
