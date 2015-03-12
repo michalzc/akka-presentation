@@ -8,6 +8,6 @@ import lombok.Getter;
  */
 @Getter
 @AllArgsConstructor
-public class StoreImage {
-    public byte[] imageData;
+public class JobStartedResp {
+    private String jobId;
 }

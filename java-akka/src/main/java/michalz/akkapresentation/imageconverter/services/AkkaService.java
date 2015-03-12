@@ -4,9 +4,7 @@ import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
-import michalz.akkapresentation.imageconverter.domain.protocol.InitializeGateway;
-import michalz.akkapresentation.imageconverter.domain.protocol.JobStarted;
-import michalz.akkapresentation.imageconverter.domain.protocol.StoreImage;
+import michalz.akkapresentation.imageconverter.domain.protocol.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -36,7 +34,7 @@ public class AkkaService {
     public void init() {
         actorSystem = ActorSystem.create("java-app-actor-system");
         gatewayRef = actorSystem.actorOf(GatewayActor.props(applicationContext), "gateway");
-        gatewayRef.tell(new InitializeGateway(), ActorRef.noSender());
+        gatewayRef.tell(new InitializeGatewayReq(), ActorRef.noSender());
     }
 
     @PreDestroy
@@ -45,8 +43,12 @@ public class AkkaService {
         actorSystem.awaitTermination(Duration.create(5, "seconds"));
     }
 
-    public JobStarted storeImage(byte[] imageData) throws Exception {
-        Future<Object> storeFuture = Patterns.ask(gatewayRef, new StoreImage(imageData), DEFAULT_TIMEOUT);
-        return (JobStarted) Await.result(storeFuture, DEFAULT_TIMEOUT.duration());
+    public JobStartedResp storeImage(byte[] imageData) throws Exception {
+        Future<Object> storeFuture = Patterns.ask(gatewayRef, new StoreImageReq(imageData), DEFAULT_TIMEOUT);
+        return (JobStartedResp) Await.result(storeFuture, DEFAULT_TIMEOUT.duration());
+    }
+
+    public JobStatusResp getJobStatus(String jobId) {
+        return null;
     }
 }

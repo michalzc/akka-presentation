@@ -5,9 +5,9 @@ import akka.actor.Props;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import akka.japi.pf.ReceiveBuilder;
-import michalz.akkapresentation.imageconverter.domain.protocol.InitializeGateway;
-import michalz.akkapresentation.imageconverter.domain.protocol.JobStarted;
-import michalz.akkapresentation.imageconverter.domain.protocol.StoreImage;
+import michalz.akkapresentation.imageconverter.domain.protocol.InitializeGatewayReq;
+import michalz.akkapresentation.imageconverter.domain.protocol.JobStartedResp;
+import michalz.akkapresentation.imageconverter.domain.protocol.StoreImageReq;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -28,9 +28,9 @@ public class GatewayActor extends AbstractActor {
     public void setupActor() {
         log.info("Creating");
 
-        receive(ReceiveBuilder.match(InitializeGateway.class, msg -> {
+        receive(ReceiveBuilder.match(InitializeGatewayReq.class, msg -> {
             log.info("Gateway initialized");
-        }).match(StoreImage.class, msg -> {
+        }).match(StoreImageReq.class, msg -> {
             sender().tell(storeImage(msg), self());
         }).matchAny(msg -> {
             log.info("Received unknown message: {}", msg);
@@ -39,9 +39,9 @@ public class GatewayActor extends AbstractActor {
         log.info("Created");
     }
 
-    private JobStarted storeImage(StoreImage msg) {
+    private JobStartedResp storeImage(StoreImageReq msg) {
         String jobId = createJobId();
-        return new JobStarted(jobId);
+        return new JobStartedResp(jobId);
     }
 
     private String createJobId() {
