@@ -16,7 +16,7 @@ object SacApp extends App {
 
   implicit val timeout = Timeout(5.seconds)
   implicit val system = ActorSystem("SacSystem")
-  val apiActorRef = system.actorOf(Props[SacApiService], "apiService")
+  val apiActorRef = system.actorOf(SacApiService.props, "apiService")
 
   IO(Http) ? Http.Bind(apiActorRef, interface = "0.0.0.0", port = 8000)
 }

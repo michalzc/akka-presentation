@@ -1,6 +1,6 @@
 package michalz.akkapresentation.sac.webapi
 
-import akka.actor.ActorLogging
+import akka.actor.{Props, ActorLogging}
 import spray.routing.HttpServiceActor
 
 /**
@@ -30,4 +30,8 @@ class SacApiService extends HttpServiceActor with ActorLogging {
       }
     }
   })
+}
+
+object SacApiService {
+  def props = Props[SacApiService]
 }
