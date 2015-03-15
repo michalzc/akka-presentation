@@ -7,5 +7,6 @@ import michalz.akkapresentation.sac.domain.ServiceAvailability
  */
 trait Finder {
   def serviceId: String
+  def serviceName: String
   def serviceAvailability(postCode: String): ServiceAvailability
 }

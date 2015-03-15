@@ -21,7 +21,7 @@ object ShellGasStationFinder {
   }
 }
 
-class ShellGasStationFinder(val serviceId: String, private val cvsFileName: String) extends Finder {
+class ShellGasStationFinder(val serviceId: String, val serviceName: String, private val cvsFileName: String) extends Finder {
 
   def serviceAvailability(postCode: String): ServiceAvailability = {
     val reader = new InputStreamReader(this.getClass.getClassLoader.getResourceAsStream(cvsFileName))
