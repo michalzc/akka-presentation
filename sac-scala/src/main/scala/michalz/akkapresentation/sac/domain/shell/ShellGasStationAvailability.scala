@@ -10,6 +10,10 @@ class ShellGasStationAvailability(
                                    val exactMatch: List[ShellGasStationService],
                                    val nearMatch: List[ShellGasStationService]) extends ServiceAvailability {
 
+  def this(postCode: String) = {
+    this(postCode, List(), List())
+  }
+
   def addExactMatch(shellGasStationService: ShellGasStationService) = {
     new ShellGasStationAvailability(postCode, shellGasStationService :: exactMatch, nearMatch)
   }

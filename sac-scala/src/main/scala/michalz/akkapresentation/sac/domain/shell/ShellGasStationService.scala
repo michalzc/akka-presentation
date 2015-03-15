@@ -7,9 +7,10 @@ import michalz.akkapresentation.sac.domain.Service
  */
 case class ShellGasStationService(
                                    siteId: String,
+                                   stationName: String,
                                    postCode: String,
                                    address: String,
                                    city: String,
                                    mainPhone: String,
-                                   additionalPhone: String,
+                                   additionalPhone: Option[String],
                                    email: String) extends Service

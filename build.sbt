@@ -10,7 +10,8 @@ lazy val commonSettings = Seq(
   scalaVersion := "2.11.5",
   resolvers ++= Seq(
     DefaultMavenRepository,
-    Resolver.sonatypeRepo("public")
+    Resolver.sonatypeRepo("public"),
+    Resolver.typesafeRepo("releases")
   ),
   libraryDependencies ++= Seq(
     "com.typesafe.akka" %% "akka-actor" % akkaVersion,
@@ -21,7 +22,7 @@ lazy val commonSettings = Seq(
     "org.mockito" % "mockito-all" % "1.10.19" % "test",
     "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "test"
   )
-)
+) ++ net.virtualvoid.sbt.graph.Plugin.graphSettings
 
 
 lazy val javaAkka = (project in file("java-akka"))

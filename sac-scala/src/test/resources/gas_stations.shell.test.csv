@@ -1,0 +1,6 @@
+ Site ID ; Nazwa stacji ; kod pocztowy ; Miasto ; Adres ; HGV ; email ; telefon ; telefon 2 ; położenie ;;;HGV - STACJE REKOMENDOWANE DLA TRANSTORTU CIĘŻKIEGO;;;;
+1001;OSTROBRAMSKA;04-175;Warszawa;ul. Ostrobramska 75;Yes;1001@shellpl.pl;511845477;;pokaż na mapie;;;;;https://maps.google.pl/maps/search/52.232304,+21.115047/@52.232304,21.11504717z;52.232304;21.115047
+1002;STAWKI;01-040;Warszawa;ul. Stawki 42;No;1002@shellpl.pl;511825418;;pokaż na mapie;;;;;https://maps.google.pl/maps/search/52.25063,+20.982283/@52.25063,20.98228317z;52.25063;20.982283
+1003;PRUSZKÓW;05-800;Pruszków;al. Wojska Polskiego 4;No;1003@shellpl.pl;511846134;;pokaż na mapie;;;;;https://maps.google.pl/maps/search/52.167533,+20.806249/@52.167533,20.80624917z;52.167533;20.806249
+1005;BIAŁY;02-183;Warszawa;Al. Krakowska 15;Yes;1005@shellpl.pl;511846258;;pokaż na mapie;;;;;https://maps.google.pl/maps/search/52.165226,+20.931262/@52.165226,20.93126217z;52.165226;20.931262
+1006;MARKI;05-270;Marki;ul. Piłsudskiego 2;Yes;1006@shellpl.pl;511835340;;pokaż na mapie;;;;;https://maps.google.pl/maps/search/52.304716,+21.090708/@52.304716,21.09070817z;52.304716;21.090708
