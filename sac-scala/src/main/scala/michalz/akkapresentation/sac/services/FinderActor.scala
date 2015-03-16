@@ -1,6 +1,7 @@
 package michalz.akkapresentation.sac.services
 
-import akka.actor.{ActorLogging, Props, Actor}
+import akka.actor.{Actor, ActorLogging, Props}
+import michalz.akkapresentation.sac.domain.messages.{FoundAvailability, RequestAvailabilities}
 import michalz.akkapresentation.sac.services.finders.Finder
 
 /**
@@ -13,7 +14,9 @@ class FinderActor(private val finder: Finder) extends Actor with ActorLogging {
   }
 
   def receive = {
-    case x => unhandled(x)
+    case RequestAvailabilities(postCode) => {
+        sender() ! FoundAvailability(postCode, finder.serviceId, finder.serviceAvailability(postCode))
+    }
   }
 }
 

@@ -10,9 +10,9 @@ class ShellGasStationFinderTest extends Specification {
 
   val noInstancePostCode = "51-354"
   val oneInstancePostCode = "04-175"
-  val twoInsancesPostCode = "05-270"
+  val twoInstancesPostCode = "05-270"
 
-  def finder = new ShellGasStationFinder("testServiceId", "gas_stations.shell.test.csv")
+  def finder = new ShellGasStationFinder("1001", "testServiceId", "gas_stations.shell.test.csv")
 
   "this is shell finder specification " >> {
     "where finder must return availability object with same post code without services" >> {
@@ -29,12 +29,12 @@ class ShellGasStationFinderTest extends Specification {
       availability.nearMatch must beEmpty
     }
 
-    "where finder must reture availability with two matches" >> {
-      val availability = finder.serviceAvailability(twoInsancesPostCode)
+    "where finder must return availability with two matches" >> {
+      val availability = finder.serviceAvailability(twoInstancesPostCode)
       availability.exactMatch must have size (1)
-      availability.exactMatch(0).postCode must be equalTo(twoInsancesPostCode)
+      availability.exactMatch(0).postCode must be equalTo(twoInstancesPostCode)
       availability.nearMatch must have size (1)
-      availability.nearMatch(0) must not be equalTo(twoInsancesPostCode)
+      availability.nearMatch(0) must not be equalTo(twoInstancesPostCode)
     }
   }
 

@@ -15,8 +15,20 @@ object SearchInProgress extends Availability {
 
 }
 
-trait ServiceAvailability extends Availability {
-  def postCode: String
-  def exactMatch: List[_ <: Service]
-  def nearMatch: List[_ <: Service]
+class ServiceAvailability(val postCode: String,
+                          val serviceId: String,
+                          val exactMatch: List[Service],
+                          val nearMatch: List[Service]) extends Availability {
+
+  def this(postCode: String, serviceId: String) = {
+    this(postCode, serviceId, List(), List())
+  }
+
+  def addExactMatch(service: Service) = {
+    new ServiceAvailability(postCode, serviceId, service :: exactMatch, nearMatch)
+  }
+
+  def addNearMatch(service: Service) = {
+    new ServiceAvailability(postCode, serviceId, exactMatch, service :: nearMatch)
+  }
 }
