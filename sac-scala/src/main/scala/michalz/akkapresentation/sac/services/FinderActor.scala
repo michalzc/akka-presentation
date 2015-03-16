@@ -1,14 +1,20 @@
 package michalz.akkapresentation.sac.services
 
-import akka.actor.{Props, Actor}
+import akka.actor.{ActorLogging, Props, Actor}
 import michalz.akkapresentation.sac.services.finders.Finder
 
 /**
  * Created by michal on 16.03.15.
  */
-class FinderActor(private val finder: Finder) extends Actor {
+class FinderActor(private val finder: Finder) extends Actor with ActorLogging {
 
-  def receive = ???
+  override def preStart = {
+    log.info("Actor for {} created", finder.serviceName)
+  }
+
+  def receive = {
+    case x => unhandled(x)
+  }
 }
 
 object FinderActor {
