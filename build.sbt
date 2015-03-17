@@ -21,7 +21,8 @@ lazy val commonSettings = Seq(
     "junit" % "junit" % "4.12" % "test",
     "org.mockito" % "mockito-all" % "1.10.19" % "test",
     "com.typesafe.akka" %% "akka-testkit" % akkaVersion % "test"
-  )
+  ),
+  dependencyOverrides += "org.scala-lang" % "scala-compiler" % scalaVersion.value
 ) ++ net.virtualvoid.sbt.graph.Plugin.graphSettings
 
 
@@ -47,6 +48,7 @@ lazy val sacScala = (project in file("sac-scala"))
       "org.reactivemongo" %% "reactivemongo" % "0.10.5.0.akka23",
       "io.spray" %% "spray-can" % sprayVersion,
       "io.spray" %% "spray-routing" % sprayVersion,
+      "org.json4s" %% "json4s-jackson" % "3.2.10",
       "org.slf4j" % "slf4j-api" % "1.7.10",
       "org.apache.logging.log4j" % "log4j-api" % "2.1",
       "org.apache.logging.log4j" % "log4j-core" % "2.1",

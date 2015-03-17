@@ -1,6 +1,6 @@
 package michalz.akkapresentation.sac.services
 
-import akka.actor.{Actor, ActorLogging, ActorRef}
+import akka.actor.{Identify, Actor, ActorLogging, ActorRef}
 import michalz.akkapresentation.sac.domain.Availability
 import michalz.akkapresentation.sac.domain.messages.{FoundAvailabilities, FoundAvailability, RequestAvailabilities}
 
@@ -27,7 +27,6 @@ trait SacServiceComponent {
     }
 
     def receive = {
-
       case request: RequestAvailabilities => {
         log.info("Received request for availabilities for post code {} from {}", request.postCode, sender())
         val ongoingRequest = ongoingRequests.get(request.postCode).map(_.addRequestor(sender())).getOrElse(
