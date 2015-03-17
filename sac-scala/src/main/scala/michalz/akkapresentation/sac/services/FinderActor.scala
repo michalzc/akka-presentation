@@ -2,6 +2,7 @@ package michalz.akkapresentation.sac.services
 
 import akka.actor.{Actor, ActorLogging, Props}
 import akka.pattern.pipe
+import michalz.akkapresentation.sac.domain.ServiceAvailability
 import michalz.akkapresentation.sac.domain.messages.{FoundAvailability, RequestAvailabilities}
 import michalz.akkapresentation.sac.services.finders.Finder
 
@@ -12,7 +13,7 @@ import scala.concurrent.{ExecutionContext, Future}
  */
 class FinderActor(private val finder: Finder) extends Actor with ActorLogging {
 
-  implicit val ec: ExecutionContext = context.dispatcher
+  import context.dispatcher
 
   override def preStart = {
     log.info("Actor for {} created", finder.serviceName)
@@ -20,10 +21,10 @@ class FinderActor(private val finder: Finder) extends Actor with ActorLogging {
 
   def receive = {
     case RequestAvailabilities(postCode) => {
-      val future = Future {
-        FoundAvailability(postCode, finder.serviceId, finder.serviceAvailability(postCode))
-      }
-      future pipeTo sender()
+      val futureAvailability: Future[ServiceAvailability] = finder.serviceAvailability(postCode)
+      futureAvailability.map{ availability =>
+        FoundAvailability(postCode, finder.serviceId, availability)
+      } pipeTo sender()
     }
   }
 }

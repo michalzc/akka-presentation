@@ -8,6 +8,7 @@ import michalz.akkapresentation.sac.services.finders.Finder
 import org.apache.commons.csv.{CSVFormat, CSVParser, CSVRecord}
 
 import scala.collection.JavaConversions._
+import scala.concurrent.{ExecutionContext, Future}
 
 /**
  * This finder is suboptimal intentionally
@@ -24,17 +25,19 @@ object ShellGasStationFinder {
 
 class ShellGasStationFinder(val serviceId: String, val serviceName: String, private val cvsFileName: String) extends Finder {
 
-  def serviceAvailability(postCode: String): ServiceAvailability = {
+  def serviceAvailability(postCode: String)(implicit ec: ExecutionContext): Future[ServiceAvailability] = {
     val reader = new InputStreamReader(this.getClass.getClassLoader.getResourceAsStream(cvsFileName))
     try {
-      val records: CSVParser = CSVFormat.RFC4180.withDelimiter(';').parse(reader)
-      records.foldLeft(new ServiceAvailability(postCode, serviceId)) { (availability, record) =>
-        if(postCode == record.get(2)) {
-          availability.addExactMatch(ShellGasStationFinder.mkService(record))
-        } else if(record.get(2).startsWith(postCode.substring(0, 2))) {
-          availability.addNearMatch(ShellGasStationFinder.mkService(record))
-        } else {
-          availability
+      Future {
+        val records: CSVParser = CSVFormat.RFC4180.withDelimiter(';').parse(reader)
+        records.foldLeft(new ServiceAvailability(postCode, serviceId)) { (availability, record) =>
+          if (postCode == record.get(2)) {
+            availability.addExactMatch(ShellGasStationFinder.mkService(record))
+          } else if (record.get(2).startsWith(postCode.substring(0, 2))) {
+            availability.addNearMatch(ShellGasStationFinder.mkService(record))
+          } else {
+            availability
+          }
         }
       }
     }
