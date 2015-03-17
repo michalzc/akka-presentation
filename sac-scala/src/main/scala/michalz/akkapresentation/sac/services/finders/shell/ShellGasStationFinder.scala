@@ -19,16 +19,16 @@ object ShellGasStationFinder {
   def mkService(record: CSVRecord): ShellGasStationService = {
     ShellGasStationService(
       record.get(0), record.get(1), record.get(2), record.get(4), record.get(3), record.get(7),
-      if(record.get(8).trim.isEmpty) None else Some(record.get(8)), record.get(6))
+      if (record.get(8).trim.isEmpty) None else Some(record.get(8)), record.get(6))
   }
 }
 
 class ShellGasStationFinder(val serviceId: String, val serviceName: String, private val cvsFileName: String) extends Finder {
 
   def serviceAvailability(postCode: String)(implicit ec: ExecutionContext): Future[ServiceAvailability] = {
-    val reader = new InputStreamReader(this.getClass.getClassLoader.getResourceAsStream(cvsFileName))
-    try {
-      Future {
+    Future {
+      val reader = new InputStreamReader(this.getClass.getClassLoader.getResourceAsStream(cvsFileName))
+      try {
         val records: CSVParser = CSVFormat.RFC4180.withDelimiter(';').parse(reader)
         records.foldLeft(new ServiceAvailability(postCode, serviceId)) { (availability, record) =>
           if (postCode == record.get(2)) {
@@ -39,10 +39,9 @@ class ShellGasStationFinder(val serviceId: String, val serviceName: String, priv
             availability
           }
         }
+      } finally {
+        reader.close()
       }
-    }
-    finally {
-      reader.close()
     }
   }
 }

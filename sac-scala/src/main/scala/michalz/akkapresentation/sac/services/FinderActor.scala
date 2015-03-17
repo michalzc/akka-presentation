@@ -21,6 +21,7 @@ class FinderActor(private val finder: Finder) extends Actor with ActorLogging {
 
   def receive = {
     case RequestAvailabilities(postCode) => {
+      log.info("Received availability request for {}", postCode)
       val futureAvailability: Future[ServiceAvailability] = finder.serviceAvailability(postCode)
       futureAvailability.map{ availability =>
         FoundAvailability(postCode, finder.serviceId, availability)

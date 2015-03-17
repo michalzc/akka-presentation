@@ -61,6 +61,10 @@ trait SacServiceComponent {
         }
       }
 
+      case x => {
+        log.info("Received unknown message: {}", x)
+      }
+
     }
 
     class OngoingRequest(val postCode: String, val requestors: List[ActorRef], val collectedAvailabilities: Map[String, Availability]) {
