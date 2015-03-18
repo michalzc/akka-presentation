@@ -56,6 +56,7 @@ lazy val sacScala = (project in file("sac-scala"))
       "org.apache.commons" % "commons-csv" % "1.1",
 
       //test dependencies
-      "io.spray" %% "spray-testkit" % "1.3.2" % "test"
+      "io.spray" %% "spray-testkit" % "1.3.2" % "test" exclude("org.specs2", "specs2_2.11"),
+      "org.specs2" %% "specs2-core" % "3.0.1" % "test"
     )
   )

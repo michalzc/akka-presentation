@@ -23,8 +23,8 @@ class SacServiceTest extends Specification {
 
   implicit val system = ActorSystem("TestSystem")
   implicit val timeout = Timeout(Duration(5, "seconds"))
-  
-  val testSacServiceComponent = new TestSacServiceComponent(testServiceId, testServiceName)
+
+  val testSacServiceComponent = new TestSacServiceComponent(testServiceId, testServiceName, system)
 
   "This is a sac service specification" >> {
     "sac service asked for availability for any post code shall return no services" >> {
@@ -44,15 +44,16 @@ class SacServiceTest extends Specification {
   }
 }
 
-class TestSacServiceComponent(val testServiceId: String, val testServiceName: String) extends SacServiceComponent{
+class TestSacServiceComponent(val testServiceId: String, val testServiceName: String, val system: ActorSystem) extends SacServiceComponent{
 
     def sacService = {
       new SacService {
         def services = Seq(
           new Finder {
+            def actorSystem = system
             def serviceId = testServiceId
             def serviceName = testServiceName
-            def serviceAvailability(postCode: String)(implicit ec: ExecutionContext) = Future(new ServiceAvailability(postCode, serviceName))
+            def serviceAvailability(postCode: String) = Future(new ServiceAvailability(postCode, serviceName))(system.dispatcher)
           }
         )
       }

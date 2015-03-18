@@ -1,6 +1,6 @@
 package michalz.akkapresentation.sac.services
 
-import akka.actor.{Identify, Actor, ActorLogging, ActorRef}
+import akka.actor.{Actor, ActorLogging, ActorRef}
 import michalz.akkapresentation.sac.domain.Availability
 import michalz.akkapresentation.sac.domain.messages.{FoundAvailabilities, FoundAvailability, RequestAvailabilities}
 
@@ -28,37 +28,11 @@ trait SacServiceComponent {
 
     def receive = {
       case request: RequestAvailabilities => {
-        log.info("Received request for availabilities for post code {} from {}", request.postCode, sender())
-        val ongoingRequest = ongoingRequests.get(request.postCode).map(_.addRequestor(sender())).getOrElse(
-          new OngoingRequest(request.postCode, sender()))
-        ongoingRequests.put(request.postCode, ongoingRequest)
-        finderActors.values.foreach(_ ! request)
+        handleRequestAvailability(request)
       }
 
       case FoundAvailability(postCode, serviceId, availability) => {
-        log.info("Received response from finder for post code {}", postCode)
-        ongoingRequests.get(postCode) match {
-          case Some(ongoingRequest) => {
-            val newRequest = ongoingRequest.addAvailability(serviceId, availability)
-            if (newRequest.isComplete) {
-              log.info("Request is completed, sending response to requestors")
-              ongoingRequests.remove(postCode)
-              val foundAvailabilities: FoundAvailabilities = FoundAvailabilities(postCode, newRequest
-                .collectedAvailabilities)
-
-              newRequest.requestors.foreach{ req =>
-                log.info("Sending response to {}", req)
-                req ! foundAvailabilities
-              }
-            } else {
-              log.info("Request is still not completed, waiting for other finders")
-              ongoingRequests.put(postCode, newRequest)
-            }
-          }
-          case None => {
-            log.warning("Something went wrong, no ongoing request for {} post code", postCode)
-          }
-        }
+        handleFoundAvailability(postCode, serviceId, availability)
       }
 
       case x => {
@@ -67,7 +41,43 @@ trait SacServiceComponent {
 
     }
 
-    class OngoingRequest(val postCode: String, val requestors: List[ActorRef], val collectedAvailabilities: Map[String, Availability]) {
+    def handleRequestAvailability(request: RequestAvailabilities): Unit = {
+      log.info("Received request for availabilities for post code {} from {}", request.postCode, sender())
+      val ongoingRequest = ongoingRequests.get(request.postCode).map(_.addRequestor(sender())).getOrElse(
+        new OngoingRequest(request.postCode, sender()))
+      ongoingRequests.put(request.postCode, ongoingRequest)
+      finderActors.values.foreach(_ ! request)
+    }
+
+    def handleFoundAvailability(postCode: String, serviceId: String, availability: Availability): Unit = {
+      log.info("Received response from finder {} for post code {}", sender(), postCode)
+      ongoingRequests.get(postCode) match {
+        case Some(ongoingRequest) => {
+          val newRequest = ongoingRequest.addAvailability(serviceId, availability)
+          if (newRequest.isComplete) {
+            log.info("Request is completed, sending response to requestors")
+            ongoingRequests.remove(postCode)
+            val foundAvailabilities: FoundAvailabilities = FoundAvailabilities(postCode, newRequest
+              .collectedAvailabilities)
+
+            newRequest.requestors.foreach { req =>
+              log.info("Sending response to {}", req)
+              req ! foundAvailabilities
+            }
+          } else {
+            log.info("Request is still not completed, waiting for other finders")
+            ongoingRequests.put(postCode, newRequest)
+          }
+        }
+        case None => {
+          log.warning("Something went wrong, no ongoing request for {} post code", postCode)
+        }
+      }
+    }
+
+
+    class OngoingRequest(val postCode: String, val requestors: List[ActorRef],
+                         val collectedAvailabilities: Map[String, Availability]) {
       def this(postCode: String, requestor: ActorRef) = {
         this(postCode, List(requestor), Map())
       }

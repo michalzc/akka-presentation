@@ -1,7 +1,9 @@
 package michalz.akkapresentation.sac.services.finders.shell
 
+import akka.actor.ActorSystem
 import michalz.akkapresentation.sac.domain.ServiceAvailability
 import org.specs2.mutable.Specification
+import org.specs2.specification.AfterAll
 
 import scala.concurrent.duration._
 import scala.concurrent.{Await, ExecutionContext}
@@ -9,17 +11,21 @@ import scala.util.Success
 /**
  * Created by michal on 15.03.15.
  */
-class ShellGasStationFinderTest extends Specification {
-  import ExecutionContext.Implicits.global
-  
+class ShellGasStationFinderTest extends Specification with AfterAll {
+
+  val system = ActorSystem("SGSFSSystem")
   val noInstancePostCode = "51-354"
   val oneInstancePostCode = "04-175"
   val twoInstancesPostCode = "05-270"
   val duration = Duration(5, "seconds")
-  
 
-  def finder = new ShellGasStationFinder("1001", "testServiceId", "gas_stations.shell.test.csv")
-  
+  def afterAll() = {
+    system.shutdown()
+    system.awaitTermination()
+  }
+
+  def finder = new ShellGasStationFinder("1001", "testServiceId", "gas_stations.shell.test.csv", system)
+
   "this is shell finder specification " >> {
     "where finder must return availability object with same post code without services" >> {
       val future = finder.serviceAvailability(noInstancePostCode)

@@ -11,5 +11,5 @@ import scala.concurrent.{ExecutionContext, Future}
 trait Finder {
   def serviceId: String
   def serviceName: String
-  def serviceAvailability(postCode: String)(implicit ec: ExecutionContext): Future[ServiceAvailability]
+  def serviceAvailability(postCode: String): Future[ServiceAvailability]
 }

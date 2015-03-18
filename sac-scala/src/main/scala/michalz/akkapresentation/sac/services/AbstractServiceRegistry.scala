@@ -1,6 +1,8 @@
 package michalz.akkapresentation.sac.services
 
-import michalz.akkapresentation.sac.services.finders.Finder
+import akka.actor.ActorSystem
+import michalz.akkapresentation.sac.services.finders.texoffice.TaxOfficeFinder
+import michalz.akkapresentation.sac.services.finders.{MongoHandler, Finder}
 import michalz.akkapresentation.sac.services.finders.shell.ShellGasStationFinder
 
 /**
@@ -11,5 +13,12 @@ trait AbstractServiceRegistry {
 }
 
 trait ServiceRegistry extends AbstractServiceRegistry {
-  val services: Seq[Finder] = List(new ShellGasStationFinder("1001", "ShellGasStation",  "gas_stations.shell.csv"))
+  def actorSystem: ActorSystem
+  def mongoHandler: MongoHandler
+
+  val services: Seq[Finder] = List(
+    new ShellGasStationFinder("1001", "ShellGasStation",  "gas_stations.shell.csv", actorSystem),
+    new TaxOfficeFinder("2001", "TaxOffice", "akkapresentation", "taxoffices", mongoHandler, actorSystem)
+
+  )
 }

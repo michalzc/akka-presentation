@@ -103,7 +103,7 @@ Urząd Skarbowy w Bełchatowie,97-400,Bełchatów,Józefa Piłsudskiego 18,(44) 
 Urząd Skarbowy w Brzezinach,95-060,Brzeziny,Sienkiewicza 16,(46) 874-30-11,(46) 874-21-77,us1003@ld.mofnet.gov.pl,1003
 Urząd Skarbowy w Głownie,95-015,Głowno,Ludwika Norblina 2,(42) 719-19-81,(42) 719-40-96,us1004@ld.mofnet.gov.pl,1004
 Urząd Skarbowy w Kutnie,99-300,Kutno,Dr. Antoniego Troczewskiego 12,(24) 355-61-00,(24) 355-65-65,us1005@ld.mofnet.gov.pl,1005
-Urząd Skarbowy w Łasku,98-100,Łask,9 Maja 31,(43) 671-13-00,Brak,us1006@ld.mofnet.gov.pl,1006
+"Urząd Skarbowy w Łasku",98-100,Łask,"9 Maja 31","(43) 671-13-00",,us1006@ld.mofnet.gov.pl,1006,,,,,,,
 Urząd Skarbowy w Łęczycy,99-100,Łęczyca,al. Jana Pawła II 17,(24) 721-70-12,(24) 721-23-12,us1028@ld.mofnet.gov.pl,1028
 Urząd Skarbowy w Łowiczu,99-400,Łowicz,Józefa Chełmońskiego 2,(46) 837-65-05,(46) 837-97-66,us1007@ld.mofnet.gov.pl,1007
 Pierwszy Urząd Skarbowy Łódź - Bałuty,91-066,Łódź,Zachodnia 47,(42) 253-56-00,(42) 253-57-22,us1008@ld.mofnet.gov.pl,1008
@@ -137,7 +137,7 @@ Urząd Skarbowy w Gorlicach,38-300,Gorlice,Bardiowska 9,(18) 545-02-00,(18) 545-
 Pierwszy Urząd Skarbowy Kraków,30-363,Kraków,Rzemieślnicza 20,(12) 384-60-00,(12) 384-63-00 ,us1207@mp.mofnet.gov.pl ,1207
 Drugi Urząd Skarbowy Kraków,31-272,Kraków,Krowoderskich Zuchów 2,(12) 665-60-00,(12) 631-54-50,us1228@mp.mofnet.gov.pl,1228
 Urząd Skarbowy Kraków - Krowodrza,31-272,Kraków,Krowoderskich Zuchów 2,(12) 665-60-00,(12) 665-61-36,us1208@mp.mofnet.gov.pl,1208
-Urząd Skarbowy Kraków - Nowa Huta,31-621,Kraków,Bohaterów Września 80,(12) 681-70-00 ,(12) 647-92-22 ,us1209@mp.mofnet.gov.pl ,1209 
+Urząd Skarbowy Kraków - Nowa Huta,31-621,Kraków,Bohaterów Września 80,(12) 681-70-00 ,(12) 647-92-22 ,us1209@mp.mofnet.gov.pl ,1209
 Urząd Skarbowy Kraków - Podgórze,30-415,Kraków,Wadowicka 10,(12) 254-70-00,(12) 267-40-91,us1210@mp.mofnet.gov.pl,1210
 Urząd Skarbowy Kraków - Prądnik,31-272,Kraków,Krowoderskich Zuchów 2,(12) 665-60-00,(12) 665-67-51,us1211@mp.mofnet.gov.pl,1211
 Urząd Skarbowy Kraków - Stare Miasto,31-001,Kraków,Grodzka 65,(12) 293-81-00,(12) 293-82-66,us1212@mp.mofnet.gov.pl,1212
@@ -206,7 +206,7 @@ Urząd Skarbowy Warszawa - Wawer,04-379,Warszawa,Ludwika Mycielskiego 21,(22) 81
 Urząd Skarbowy Warszawa - Wola,01-381,Warszawa,Powstańców Śląskich 2D,(22) 533-66-00,(22) 533-66-15,us1440@mz.mofnet.gov.pl,1440
 Urząd Skarbowy w Węgrowie,07-100,Węgrów,Kościelna 4,(25) 792-24-48,(25) 792-24-48 ,us1441@mz.mofnet.gov.pl,1441
 Urząd Skarbowy w Wołominie ,05-200,Wołomin,Przejazd 2,(22) 787-75-82,(22) 776-40-60,us1442@mz.mofnet.gov.pl,1442
-Urząd Skarbowy w Wyszkowie, 07-200,Wyszków,Gen. Józefa Sowińskiego 82,(29) 743-02-41,(29) 742-34-22,us1443@mz.mofnet.gov.pl,1443
+"Urząd Skarbowy w Wyszkowie",07-200,Wyszków,"Gen. Józefa Sowińskiego 82","(29) 743-02-41","(29) 742-34-22",us1443@mz.mofnet.gov.pl,1443,,,,,,,
 Urząd Skarbowy w Zwoleniu,26-700,Zwoleń,Wojska Polskiego 39,(48) 676-35-43,(48) 6763543 wew.125,us1444@mz.mofnet.gov.pl,1444
 Urząd Skarbowy w Żurominie,09-300,Żuromin,Plac Józefa Piłsudskiego 4,(23) 657-37-56 w.127,(23) 657-32-56,us1445@mz.mofnet.gov.pl,1445
 Urząd Skarbowy w Żyrardowie,96-300,Żyrardów,1 Maja 49a,(46) 855-35-56,(46) 855-35-56 wew.115,us1446@mz.mofnet.gov.pl,1446
@@ -266,7 +266,7 @@ Urząd Skarbowy w Wysokiem Mazowieckiem,18-200,Wysokie Mazowieckie,Ludowa 21,(86
 Urząd Skarbowy w Zambrowie,18-300,Zambrów,Jantarowa 16,(86) 276-30-28,(86) 271-38-92,us2014@pd.mofnet.gov.pl ,
 Izba Skarbowa w Gdańsku,80-831,Gdańsk,Długa 75/76,(58) 300-23-00,(58) 301-43-18,is@pm.mofnet.gov.pl,2201
 Pomorski Urząd Skarbowy w Gdańsku,80-749,Gdańsk,Żytnia 4/6,(58) 690-59-38,(58) 690-59-57,us2271@pm.mofnet.gov.pl,2271
-Urząd Skarbowy w Bytowie,77-100,Bytów,1 Maja 16,(59) 822-28-91,(59) 822-78-09,us2202@pm.mofnet.gov.pl,2202 
+Urząd Skarbowy w Bytowie,77-100,Bytów,1 Maja 16,(59) 822-28-91,(59) 822-78-09,us2202@pm.mofnet.gov.pl,2202
 Urząd Skarbowy w Chojnicach,89-600,Chojnice,Młyńska 22,(52) 396-54-00,(52) 396-54-48,us2203@pm.mofnet.gov.pl,2203
 Urząd Skarbowy w Człuchowie,77-300,Człuchów,Jerzego z Dąbrowy 5 E,(59) 834-10-41 do 43,(59) 834-39-26,us2204@pm.mofnet.gov.pl,2204
 Pierwszy Urząd Skarbowy w Gdańsku,80-822,Gdańsk,Rzeźnicka 54/56,(58) 321-23-00,(58) 321-23-01,us2205@pm.mofnet.gov.pl,2205
@@ -288,8 +288,8 @@ Urząd Skarbowy w Tczewie,83-100,Tczew,Gdańska 33,(58) 532-90-10,(58) 532-90-66
 Urząd Skarbowy w Wejherowie,84-200,Wejherowo,Jana III Sobieskiego 346,(58) 736-39-00,(58) 736-38-93,us2220@pm.mofnet.gov.pl,2220
 Izba Skarbowa w Katowicach,40-022,Katowice,Ks. Konstantego Damrota 25,(32) 207-60-00,(32) 207-60-10,is@sl.mofnet.gov.pl,2401
 Biuro Krajowej Informacji Podatkowej w Bielsku-Białej,43-300,Bielsko-Biała,Romualda Traugutta 2a,(33) 819-84-00,(33) 812-38-46,bkip@sl.mofnet.gov.pl,2461
-Pierwszy Śląski Urząd Skarbowy w Sosnowcu,41-219,Sosnowiec,Braci Mieroszewskich 97,(32) 786-11-00,(32) 786-12-05,us2471@sl.mofnet.gov.pl,2471"Drugi Śląski Urząd Skarbowy 
-w Bielsku-Białej",43-300,Bielsko-Biała,Warszawska 45,(33) 499-84-00,(33) 499-84-01,us2472@sl.mofnet.gov.pl,2472
+Pierwszy Śląski Urząd Skarbowy w Sosnowcu,41-219,Sosnowiec,Braci Mieroszewskich 97,(32) 786-11-00,(32) 786-12-05,us2471@sl.mofnet.gov.pl,2471
+Drugi Śląski Urząd Skarbowy w Bielsku-Białej,43-300,Bielsko-Biała,Warszawska 45,(33) 499-84-00,(33) 499-84-01,us2472@sl.mofnet.gov.pl,2472
 Urząd Skarbowy w Będzinie,42-500,Będzin,I Armii Wojska Polskiego 1,(32) 762-77-00,(32) 762-77-06,us2402@sl.mofnet.gov.pl,
 Pierwszy Urząd Skarbowy w Bielsku-Białej,43-300,Bielsko-Biała,Teodora Sixta 17,(33) 499-82-00,(33) 499-82-21,us2403@sl.mofnet.gov.pl,
 Drugi Urząd Skarbowy w Bielsku-Białej,43-300,Bielsko-Biała,Gen. Stanisława Maczka 73,(33) 499-80-00,(33) 499-81-00,us2404@sl.mofnet.gov.pl,
