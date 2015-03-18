@@ -3,8 +3,9 @@ package michalz.akkapresentation.sac.webapi
 import akka.actor._
 import akka.pattern.ask
 import akka.util.Timeout
+import michalz.akkapresentation.sac.domain.Availability
 import michalz.akkapresentation.sac.domain.messages.{FoundAvailabilities, RequestAvailabilities}
-import org.json4s.NoTypeHints
+import org.json4s.{FieldSerializer, NoTypeHints}
 import org.json4s.jackson.Serialization
 import spray.httpx.Json4sJacksonSupport
 import spray.routing.HttpServiceActor
@@ -17,7 +18,7 @@ import scala.concurrent.duration._
 class SacApiService extends HttpServiceActor with ActorLogging with Json4sJacksonSupport {
   import context.become
 
-  implicit def json4sJacksonFormats = Serialization.formats(NoTypeHints)
+  implicit def json4sJacksonFormats = Serialization.formats(NoTypeHints) + FieldSerializer[Availability]() 
   implicit def timeout = Timeout(30.seconds)
   implicit val ec = context.dispatcher //try to remove!
 

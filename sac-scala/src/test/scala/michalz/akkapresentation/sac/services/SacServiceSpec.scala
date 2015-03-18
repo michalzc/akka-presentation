@@ -40,6 +40,7 @@ class SacServiceSpec extends Specification {
       response.availabilities must haveSize(1)
       response.availabilities must haveKey(testServiceId)
       response.availabilities.get(testServiceId).get must haveClass[ServiceAvailability]
+      response.availabilities.get(testServiceId).get.status must be equalTo "COMPLETED"
     }
   }
 }

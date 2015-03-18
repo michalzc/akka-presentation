@@ -18,7 +18,7 @@ trait SacServiceComponent {
   this: ServiceRegistryComponent =>
 
   class SacService extends Actor with ActorLogging {
-    implicit val ec = context.system.dispatcher
+    import context.dispatcher
     implicit val askTimeout = Timeout(5.seconds)
 
     var finderActors: Map[String, ActorRef] = Map()
@@ -32,11 +32,16 @@ trait SacServiceComponent {
 
     def receive = {
       case request: RequestAvailabilities => {
+        //responses from finder actors as collection
         val listOfFutures: Iterable[Future[FoundAvailability]] = finderActors.values.map(ask(_, request).mapTo[FoundAvailability])
+        
+        //all response futures combined into one future with sequence of responses
         val combinedFutures: Future[Iterable[FoundAvailability]] = Future.sequence(listOfFutures)
+        
+        //transformation of future content from sequence to one response class
         val future: Future[FoundAvailabilities] = combinedFutures.map { seqOfFoundAvailability =>
-          val availabilitiesMap: Map[String, Availability] = seqOfFoundAvailability.map { ava =>
-            (ava.serviceId -> ava.availability)
+          val availabilitiesMap: Map[String, Availability] = seqOfFoundAvailability.map { foundAvailability =>
+            (foundAvailability.serviceId -> foundAvailability.availability)
           }.toMap
           FoundAvailabilities(request.postCode, availabilitiesMap)
         }

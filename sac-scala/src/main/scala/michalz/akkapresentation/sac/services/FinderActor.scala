@@ -13,7 +13,7 @@ import scala.concurrent.{ExecutionContext, Future}
  */
 class FinderActor(private val finder: Finder) extends Actor with ActorLogging {
 
-  implicit val ec = context.system.dispatcher
+  import context.dispatcher
 
   override def preStart = {
     log.info("Actor for {} created", finder.serviceName)

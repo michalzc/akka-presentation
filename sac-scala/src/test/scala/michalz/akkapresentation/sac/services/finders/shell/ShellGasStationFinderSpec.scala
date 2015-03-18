@@ -31,25 +31,25 @@ class ShellGasStationFinderSpec extends Specification with AfterAll {
       val future = finder.serviceAvailability(noInstancePostCode)
       val Success(availability: ServiceAvailability) = Await.ready(future, duration).value.get
       availability.postCode must beEqualTo(noInstancePostCode)
-      availability.exactMatch must beEmpty
-      availability.nearMatch must beEmpty
+      availability.exactMatches must beEmpty
+      availability.nearMatches must beEmpty
     }
 
     "where finder must return availability with one match" >> {
       val future = finder.serviceAvailability(oneInstancePostCode)
       val Success(availability: ServiceAvailability) = Await.ready(future, duration).value.get
-      availability.exactMatch must have size (1)
-      availability.exactMatch(0).postCode must beEqualTo(oneInstancePostCode)
-      availability.nearMatch must beEmpty
+      availability.exactMatches must have size (1)
+      availability.exactMatches(0).postCode must beEqualTo(oneInstancePostCode)
+      availability.nearMatches must beEmpty
     }
 
     "where finder must return availability with two matches" >> {
       val future = finder.serviceAvailability(twoInstancesPostCode)
       val Success(availability: ServiceAvailability) = Await.ready(future, duration).value.get
-      availability.exactMatch must have size (1)
-      availability.exactMatch(0).postCode must be equalTo(twoInstancesPostCode)
-      availability.nearMatch must have size (1)
-      availability.nearMatch(0) must not be equalTo(twoInstancesPostCode)
+      availability.exactMatches must have size (1)
+      availability.exactMatches(0).postCode must be equalTo(twoInstancesPostCode)
+      availability.nearMatches must have size (1)
+      availability.nearMatches(0) must not be equalTo(twoInstancesPostCode)
     }
   }
 
