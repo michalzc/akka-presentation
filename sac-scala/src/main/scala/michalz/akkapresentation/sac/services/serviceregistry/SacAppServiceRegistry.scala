@@ -1,4 +1,4 @@
-package michalz.akkapresentation.sac.services
+package michalz.akkapresentation.sac.services.serviceregistry
 
 import akka.actor.ActorSystem
 import michalz.akkapresentation.sac.services.finders.shell.ShellGasStationFinder

@@ -5,7 +5,8 @@ import akka.io.IO
 import akka.pattern.ask
 import akka.util.Timeout
 import michalz.akkapresentation.sac.services.finders.MongoHandler
-import michalz.akkapresentation.sac.services.{SacServiceComponent, SacServiceRegistryComponent}
+import michalz.akkapresentation.sac.services.sac.DirectSacServiceComponent
+import michalz.akkapresentation.sac.services.serviceregistry.SacServiceRegistryComponent
 import michalz.akkapresentation.sac.webapi.SacApiService
 import reactivemongo.api.MongoDriver
 import spray.can.Http
@@ -21,7 +22,7 @@ object SacApp extends App {
   implicit val system = ActorSystem("SacSystem")
   val mongoHandler = new MongoHandler(new MongoDriver(system), List("localhost"))
 
-  val sacServiceComponent = new SacServiceComponent with SacServiceRegistryComponent {
+  val sacServiceComponent = new DirectSacServiceComponent with SacServiceRegistryComponent {
     def system: ActorSystem = SacApp.system
     def mongoHandler: MongoHandler = SacApp.mongoHandler
   }

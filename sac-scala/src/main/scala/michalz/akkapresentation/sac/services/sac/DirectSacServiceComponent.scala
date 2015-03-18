@@ -1,11 +1,12 @@
-package michalz.akkapresentation.sac.services
+package michalz.akkapresentation.sac.services.sac
 
 import akka.actor.{Actor, ActorLogging, ActorRef}
 import akka.pattern.{ask, pipe}
 import akka.util.Timeout
-import michalz.akkapresentation.sac.domain.{ServiceNotFound, Availability}
-import michalz.akkapresentation.sac.domain.messages.{RequestSpecificAvailabilities, FoundAvailabilities,
-FoundAvailability, RequestAvailabilities}
+import michalz.akkapresentation.sac.domain.ServiceNotFound
+import michalz.akkapresentation.sac.domain.messages.{FoundAvailabilities, FoundAvailability, RequestAvailabilities, RequestSpecificAvailabilities}
+import michalz.akkapresentation.sac.services.FinderActor
+import michalz.akkapresentation.sac.services.serviceregistry.ServiceRegistryComponent
 
 import scala.collection.mutable.{HashMap => MutableHashMap, Map => MutableMap}
 import scala.concurrent.Future
@@ -15,10 +16,10 @@ import scala.concurrent.duration._
 /**
  * Created by michal on 15.03.15.
  */
-trait SacServiceComponent {
+trait DirectSacServiceComponent extends SacServiceComponent {
   this: ServiceRegistryComponent =>
 
-  class SacService extends Actor with ActorLogging {
+  class DirectSacService extends SacService {
     import context.dispatcher
     implicit val askTimeout = Timeout(5.seconds)
 
@@ -66,5 +67,5 @@ trait SacServiceComponent {
     }
   }
 
-  def sacService = new SacService
+  def sacService = new DirectSacService
 }

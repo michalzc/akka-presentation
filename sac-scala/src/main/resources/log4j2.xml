@@ -6,12 +6,12 @@
                 <Route>
                     <Console name="ConsoleAkka" target="SYSTEM_OUT">
                         <PatternLayout
-                                pattern="%highlight{%d{HH:mm:ss.SSS} [%X{sourceThread}] %-5level %logger{1.1.1} [%X{akkaSource}]} - %msg%n"/>
+                                pattern="%highlight{%-5level} [%d{HH:mm:ss}] [%X{sourceThread}] %style{%logger{1.}}{cyan} %style{[%X{akkaSource}]}{Magenta} %msg%n"/>
                     </Console>
                 </Route>
                 <Route key="$${ctx:akkaSource}">
                     <Console name="Console" target="SYSTEM_OUT">
-                        <PatternLayout pattern="%highlight{%d{HH:mm:ss.SSS} [%t] %-5level %logger{1.1.1}} - %msg%n"/>
+                        <PatternLayout pattern="%highlight{%-5level} [%d{HH:mm:ss}] [%t] %style{%logger{1.}}{cyan} %msg%n"/>
                     </Console>
                 </Route>
             </Routes>

@@ -1,13 +1,13 @@
-package michalz.akkapresentation.sac.services
+package michalz.akkapresentation.sac.services.sac
 
 import akka.actor.ActorSystem
 import akka.pattern.ask
 import akka.testkit.TestActorRef
 import akka.util.Timeout
 import michalz.akkapresentation.sac.domain.ServiceAvailability
-import michalz.akkapresentation.sac.domain.messages.{RequestSpecificAvailabilities, FoundAvailabilities,
-RequestAvailabilities}
+import michalz.akkapresentation.sac.domain.messages.{FoundAvailabilities, RequestAvailabilities, RequestSpecificAvailabilities}
 import michalz.akkapresentation.sac.services.finders.Finder
+import michalz.akkapresentation.sac.services.serviceregistry.ServiceRegistryComponent
 import org.specs2.mutable.Specification
 import org.specs2.specification.AfterAll
 
@@ -18,7 +18,7 @@ import scala.util.Success
 /**
  * Created by michal on 16.03.15.
  */
-class SacServiceSpec extends Specification with AfterAll {
+class DirectSacServiceSpec extends Specification with AfterAll {
 
   val testServiceName = "TestService"
   val testServiceId = "9999"
@@ -28,7 +28,7 @@ class SacServiceSpec extends Specification with AfterAll {
   implicit val system = ActorSystem("TestSystem")
   implicit val timeout = Timeout(Duration(5, "seconds"))
 
-  val testSacServiceComponent = new TestSacServiceComponent(system, testServiceId, testServiceName)
+  val testSacServiceComponent = new TestDirectSacServiceComponent(system, testServiceId, testServiceName)
   val sacServiceRef = TestActorRef(testSacServiceComponent.sacService)
 
 
@@ -66,8 +66,8 @@ class SacServiceSpec extends Specification with AfterAll {
 
 }
 
-sealed class TestSacServiceComponent(val system: ActorSystem, val testServiceId: String, val testServiceName: String)
-  extends SacServiceComponent with ServiceRegistryComponent {
+sealed class TestDirectSacServiceComponent(val system: ActorSystem, val testServiceId: String, val testServiceName: String)
+  extends DirectSacServiceComponent with ServiceRegistryComponent {
 
   def serviceRegistry = new ServiceRegistry {
     override def services = Seq(
