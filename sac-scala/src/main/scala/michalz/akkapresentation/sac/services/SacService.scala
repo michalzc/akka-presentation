@@ -11,8 +11,9 @@ import scala.collection.mutable.{HashMap => MutableHashMap, Map => MutableMap}
  * Created by michal on 15.03.15.
  */
 trait SacServiceComponent {
+  this: ServiceRegistryComponent =>
 
-  trait SacService extends Actor with ServiceRegistry with ActorLogging {
+  class SacService extends Actor with ActorLogging {
 
     var finderActors: Map[String, ActorRef] = Map()
 
@@ -21,7 +22,7 @@ trait SacServiceComponent {
 
     override def preStart = {
       log.info("Starting sacActor")
-      finderActors = services.map { finder =>
+      finderActors = serviceRegistry.services.map { finder =>
         (finder.serviceId -> context.actorOf(FinderActor.props(finder), finder.serviceName))
       }.toMap
     }
@@ -96,6 +97,6 @@ trait SacServiceComponent {
   }
 
 
-  def sacService: SacService
+  def sacService = new SacService
 
 }
