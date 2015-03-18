@@ -7,19 +7,23 @@ trait Availability {
   val status: String
 }
 
-trait Service {
-  val postCode: String
-}
-
 object SearchInProgress extends Availability {
   val status = "SEARCH_IN_PROGRESS"
+}
+
+object ServiceNotFound extends Availability {
+  val status = "SERVICE_NOT_FOUND"
+}
+
+trait Service {
+  val postCode: String
 }
 
 class ServiceAvailability(val postCode: String,
                           val serviceId: String,
                           val exactMatches: List[Service],
                           val nearMatches: List[Service]) extends Availability {
-  
+
   val status = "COMPLETED"
 
   def this(postCode: String, serviceId: String) = {

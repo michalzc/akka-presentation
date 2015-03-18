@@ -3,8 +3,9 @@ package michalz.akkapresentation.sac.services
 import akka.actor.{Actor, ActorLogging, ActorRef}
 import akka.pattern.{ask, pipe}
 import akka.util.Timeout
-import michalz.akkapresentation.sac.domain.Availability
-import michalz.akkapresentation.sac.domain.messages.{FoundAvailabilities, FoundAvailability, RequestAvailabilities}
+import michalz.akkapresentation.sac.domain.{ServiceNotFound, Availability}
+import michalz.akkapresentation.sac.domain.messages.{RequestSpecificAvailabilities, FoundAvailabilities,
+FoundAvailability, RequestAvailabilities}
 
 import scala.collection.mutable.{HashMap => MutableHashMap, Map => MutableMap}
 import scala.concurrent.Future
@@ -33,20 +34,35 @@ trait SacServiceComponent {
     def receive = {
       case request: RequestAvailabilities => {
         //responses from finder actors as collection
-        val listOfFutures: Iterable[Future[FoundAvailability]] = finderActors.values.map(ask(_, request).mapTo[FoundAvailability])
-        
-        //all response futures combined into one future with sequence of responses
-        val combinedFutures: Future[Iterable[FoundAvailability]] = Future.sequence(listOfFutures)
-        
-        //transformation of future content from sequence to one response class
-        val future: Future[FoundAvailabilities] = combinedFutures.map { seqOfFoundAvailability =>
-          val availabilitiesMap: Map[String, Availability] = seqOfFoundAvailability.map { foundAvailability =>
-            (foundAvailability.serviceId -> foundAvailability.availability)
-          }.toMap
-          FoundAvailabilities(request.postCode, availabilitiesMap)
-        }
-        future pipeTo sender()
+        val listOfFutures = finderActors.values.map(ask(_, request).mapTo[FoundAvailability])
+        combineAndSendSearchResults(listOfFutures, request.postCode)
       }
+
+      case RequestSpecificAvailabilities(postCode, serviceList) => {
+        val request = RequestAvailabilities(postCode)
+        val listOfFutures = serviceList.map { serviceId =>
+          finderActors.get(serviceId) match {
+            case Some(finderActor) => ask(finderActor, request).mapTo[FoundAvailability]
+            case None => Future{FoundAvailability(postCode, serviceId, ServiceNotFound)}
+          }
+        }
+
+        combineAndSendSearchResults(listOfFutures, postCode)
+      }
+    }
+
+    def combineAndSendSearchResults(listOfFutures: Iterable[Future[FoundAvailability]], postCode: String): Unit = {
+      //all response futures combined into one future with sequence of responses
+      val combinedFutures = Future.sequence(listOfFutures)
+
+      //transformation of future content from sequence to one response class
+      val future = combinedFutures.map { seqOfFoundAvailability =>
+        val availabilitiesMap = seqOfFoundAvailability.map { foundAvailability =>
+          (foundAvailability.serviceId -> foundAvailability.availability)
+        }.toMap
+        FoundAvailabilities(postCode, availabilitiesMap)
+      }
+      future pipeTo sender()
     }
   }
 
