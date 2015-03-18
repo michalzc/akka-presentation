@@ -12,7 +12,7 @@ import scala.collection.mutable.{HashMap => MutableHashMap, Map => MutableMap}
  */
 trait SacServiceComponent {
 
-  trait SacService extends Actor with AbstractServiceRegistry with ActorLogging {
+  trait SacService extends Actor with ServiceRegistry with ActorLogging {
 
     var finderActors: Map[String, ActorRef] = Map()
 
@@ -76,7 +76,7 @@ trait SacServiceComponent {
     }
 
 
-    class OngoingRequest(val postCode: String, val requestors: List[ActorRef],
+    sealed class OngoingRequest(val postCode: String, val requestors: List[ActorRef],
                          val collectedAvailabilities: Map[String, Availability]) {
       def this(postCode: String, requestor: ActorRef) = {
         this(postCode, List(requestor), Map())

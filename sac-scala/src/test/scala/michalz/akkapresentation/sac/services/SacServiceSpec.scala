@@ -16,7 +16,7 @@ import scala.util.Success
 /**
  * Created by michal on 16.03.15.
  */
-class SacServiceTest extends Specification {
+class SacServiceSpec extends Specification {
 
   val testServiceName = "TestService"
   val testServiceId = "9999"
@@ -44,7 +44,7 @@ class SacServiceTest extends Specification {
   }
 }
 
-class TestSacServiceComponent(val testServiceId: String, val testServiceName: String, val system: ActorSystem) extends SacServiceComponent{
+sealed class TestSacServiceComponent(val testServiceId: String, val testServiceName: String, val system: ActorSystem) extends SacServiceComponent{
 
     def sacService = {
       new SacService {

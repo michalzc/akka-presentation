@@ -11,7 +11,7 @@ import scala.util.Success
 /**
  * Created by michal on 15.03.15.
  */
-class ShellGasStationFinderTest extends Specification with AfterAll {
+class ShellGasStationFinderSpec extends Specification with AfterAll {
 
   val system = ActorSystem("SGSFSSystem")
   val noInstancePostCode = "51-354"

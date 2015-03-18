@@ -1,18 +1,14 @@
 package michalz.akkapresentation.sac.services
 
 import akka.actor.ActorSystem
-import michalz.akkapresentation.sac.services.finders.texoffice.TaxOfficeFinder
-import michalz.akkapresentation.sac.services.finders.{MongoHandler, Finder}
 import michalz.akkapresentation.sac.services.finders.shell.ShellGasStationFinder
+import michalz.akkapresentation.sac.services.finders.texoffice.TaxOfficeFinder
+import michalz.akkapresentation.sac.services.finders.{Finder, MongoHandler}
 
 /**
- * Created by michal on 15.03.15.
+ * Created by michal on 18.03.15.
  */
-trait AbstractServiceRegistry {
-  def services: Seq[Finder]
-}
-
-trait ServiceRegistry extends AbstractServiceRegistry {
+trait SacAppServiceRegistry extends ServiceRegistry {
   def actorSystem: ActorSystem
   def mongoHandler: MongoHandler
 
