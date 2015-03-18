@@ -11,7 +11,8 @@ lazy val commonSettings = Seq(
   resolvers ++= Seq(
     DefaultMavenRepository,
     Resolver.sonatypeRepo("public"),
-    Resolver.typesafeRepo("releases")
+    Resolver.typesafeRepo("releases"),
+    "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
   ),
   libraryDependencies ++= Seq(
     "com.typesafe.akka" %% "akka-actor" % akkaVersion,

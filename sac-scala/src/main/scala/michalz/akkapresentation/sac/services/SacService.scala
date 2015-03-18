@@ -1,10 +1,14 @@
 package michalz.akkapresentation.sac.services
 
 import akka.actor.{Actor, ActorLogging, ActorRef}
+import akka.pattern.{ask, pipe}
+import akka.util.Timeout
 import michalz.akkapresentation.sac.domain.Availability
 import michalz.akkapresentation.sac.domain.messages.{FoundAvailabilities, FoundAvailability, RequestAvailabilities}
 
 import scala.collection.mutable.{HashMap => MutableHashMap, Map => MutableMap}
+import scala.concurrent.Future
+import scala.concurrent.duration._
 
 
 /**
@@ -14,11 +18,10 @@ trait SacServiceComponent {
   this: ServiceRegistryComponent =>
 
   class SacService extends Actor with ActorLogging {
+    implicit val ec = context.system.dispatcher
+    implicit val askTimeout = Timeout(5.seconds)
 
     var finderActors: Map[String, ActorRef] = Map()
-
-    val ongoingRequests: MutableMap[String, OngoingRequest] = MutableHashMap()
-
 
     override def preStart = {
       log.info("Starting sacActor")
@@ -29,74 +32,18 @@ trait SacServiceComponent {
 
     def receive = {
       case request: RequestAvailabilities => {
-        handleRequestAvailability(request)
-      }
-
-      case FoundAvailability(postCode, serviceId, availability) => {
-        handleFoundAvailability(postCode, serviceId, availability)
-      }
-
-      case x => {
-        log.info("Received unknown message: {}", x)
-      }
-
-    }
-
-    def handleRequestAvailability(request: RequestAvailabilities): Unit = {
-      log.info("Received request for availabilities for post code {} from {}", request.postCode, sender())
-      val ongoingRequest = ongoingRequests.get(request.postCode).map(_.addRequestor(sender())).getOrElse(
-        new OngoingRequest(request.postCode, sender()))
-      ongoingRequests.put(request.postCode, ongoingRequest)
-      finderActors.values.foreach(_ ! request)
-    }
-
-    def handleFoundAvailability(postCode: String, serviceId: String, availability: Availability): Unit = {
-      log.info("Received response from finder {} for post code {}", sender(), postCode)
-      ongoingRequests.get(postCode) match {
-        case Some(ongoingRequest) => {
-          val newRequest = ongoingRequest.addAvailability(serviceId, availability)
-          if (newRequest.isComplete) {
-            log.info("Request is completed, sending response to requestors")
-            ongoingRequests.remove(postCode)
-            val foundAvailabilities: FoundAvailabilities = FoundAvailabilities(postCode, newRequest
-              .collectedAvailabilities)
-
-            newRequest.requestors.foreach { req =>
-              log.info("Sending response to {}", req)
-              req ! foundAvailabilities
-            }
-          } else {
-            log.info("Request is still not completed, waiting for other finders")
-            ongoingRequests.put(postCode, newRequest)
-          }
+        val listOfFutures: Iterable[Future[FoundAvailability]] = finderActors.values.map(ask(_, request).mapTo[FoundAvailability])
+        val combinedFutures: Future[Iterable[FoundAvailability]] = Future.sequence(listOfFutures)
+        val future: Future[FoundAvailabilities] = combinedFutures.map { seqOfFoundAvailability =>
+          val availabilitiesMap: Map[String, Availability] = seqOfFoundAvailability.map { ava =>
+            (ava.serviceId -> ava.availability)
+          }.toMap
+          FoundAvailabilities(request.postCode, availabilitiesMap)
         }
-        case None => {
-          log.warning("Something went wrong, no ongoing request for {} post code", postCode)
-        }
+        future pipeTo sender()
       }
     }
-
-
-    sealed class OngoingRequest(val postCode: String, val requestors: List[ActorRef],
-                         val collectedAvailabilities: Map[String, Availability]) {
-      def this(postCode: String, requestor: ActorRef) = {
-        this(postCode, List(requestor), Map())
-      }
-
-      def addRequestor(requestor: ActorRef) = {
-        new OngoingRequest(postCode, requestor :: requestors, collectedAvailabilities)
-      }
-
-      def addAvailability(serviceId: String, availability: Availability) = {
-        new OngoingRequest(postCode, requestors, collectedAvailabilities + (serviceId -> availability))
-      }
-
-      def isComplete = collectedAvailabilities.size == SacService.this.finderActors.size
-    }
-
   }
 
-
   def sacService = new SacService
-
 }
