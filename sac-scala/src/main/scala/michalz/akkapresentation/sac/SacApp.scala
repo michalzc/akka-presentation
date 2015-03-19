@@ -28,9 +28,7 @@ object SacApp extends App {
     def mongoHandler: MongoHandler = SacApp.mongoHandler
   }
 
-  val cacheActorComponent = new CacheActorComponent with EHCacheServiceComponent{
-    val cacheName = "sacCache"
-  }
+  val cacheActorComponent = new CacheActorComponent with EHCacheServiceComponent
 
   val cacheActorRef = system.actorOf(Props(cacheActorComponent.cacheActor), "sacCache")
   val sacActorRef = system.actorOf(Props(sacServiceComponent.sacService), "sacService")

@@ -10,10 +10,7 @@ trait EHCacheServiceComponent extends CacheServiceComponent {
 
   val logger = LoggerFactory.getLogger(classOf[EHCacheServiceComponent])
 
-  def cacheName: String
-
-
-  class EHCacheService extends CacheService {
+  class EHCacheService(cacheName: String) extends CacheService {
     logger.info("Creating EHCacheService")
     private val cacheManager = CacheManager.newInstance()
     if(logger.isDebugEnabled) {
@@ -38,5 +35,5 @@ trait EHCacheServiceComponent extends CacheServiceComponent {
   }
 
 
-  def cacheService = new EHCacheService
+  def cacheService(cacheName: String) = new EHCacheService(cacheName)
 }

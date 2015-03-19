@@ -12,7 +12,7 @@ trait CacheActorComponent {
 
   class CacheActor extends Actor with ActorLogging {
 
-    private val cache = cacheService
+    private val cache = cacheService("sacCache")
 
     def receive: Receive = {
       case RequestSpecificAvailabilities(postCode, services) => {

@@ -10,10 +10,8 @@ import org.specs2.specification.AfterAll
 class EHCacheServiceSpec extends Specification with AfterAll {
 
   type CacheKey = (String, String)
-  val ehCacheComponent = new EHCacheServiceComponent {
-    val cacheName = "ehCacheServiceSpecCache"
-  }
-  val cacheService = ehCacheComponent.cacheService
+  val ehCacheComponent = new EHCacheServiceComponent {}
+  val cacheService = ehCacheComponent.cacheService("ehCacheServiceSpec")
 
   def afterAll = {
     cacheService.shutdownCache

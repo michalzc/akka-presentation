@@ -11,5 +11,5 @@ trait CacheServiceComponent {
     def shutdownCache
   }
 
-  def cacheService: CacheService
+  def cacheService(cacheName: String): CacheService
 }
