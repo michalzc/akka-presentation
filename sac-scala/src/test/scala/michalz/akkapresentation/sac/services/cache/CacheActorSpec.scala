@@ -36,7 +36,7 @@ class CacheActorSpec extends Specification with AfterAll {
   val testAvailability = new ServiceAvailability(testPostCode1, testServiceId, List(new Service {
     val postCode: String = testPostCode1
   }), List())
-  
+
   val cacheActorRef = TestActorRef(cacheActorComponent.cacheActor)
 
   "this is specification for cache actor" >> {

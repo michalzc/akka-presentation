@@ -23,14 +23,7 @@ trait DirectSacServiceComponent extends SacServiceComponent {
     import context.dispatcher
     implicit val askTimeout = Timeout(5.seconds)
 
-    var finderActors: Map[String, ActorRef] = Map()
 
-    override def preStart = {
-      log.info("Starting sacActor")
-      finderActors = serviceRegistry.services.map { finder =>
-        (finder.serviceId -> context.actorOf(FinderActor.props(finder), finder.serviceName))
-      }.toMap
-    }
 
     def receive = {
       case request: RequestAvailabilities => {
