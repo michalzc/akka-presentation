@@ -1,5 +1,7 @@
 package michalz.akkapresentation.sac.services.cache
 
+import java.util.UUID
+
 import akka.actor.ActorSystem
 import akka.pattern.ask
 import akka.testkit.TestActorRef
@@ -45,7 +47,7 @@ class CacheActorSpec extends Specification with AfterAll {
       cacheActorRef ! FoundAvailability(testPostCode1, testServiceId, testAvailability)
 
       val Success(response) = Await.ready(ask(cacheActorRef, RequestSpecificAvailabilities(testPostCode1,
-        Seq(testServiceId))), timeout.duration).mapTo[FoundAvailabilities].value.get
+        Seq(testServiceId), Some(UUID.randomUUID))), timeout.duration).mapTo[FoundAvailabilities].value.get
 
       response.postCode must be equalTo (testPostCode1)
       response.availabilities.keys must containAllOf(Seq(testServiceId))

@@ -53,7 +53,7 @@ class DirectSacServiceSpec extends Specification with AfterAll with TestDirectSa
 
     "sac service asked for availability for specific and non exists shall return not found response" >> {
 
-      val future = ask(sacServiceRef, RequestSpecificAvailabilities(testPostCode, nonExistingServices))
+      val future = ask(sacServiceRef, RequestSpecificAvailabilities(testPostCode, nonExistingServices, None))
       val Success(response: FoundAvailabilities) = Await.ready(future, timeout.duration).value.get
 
       response.postCode must be equalTo testPostCode

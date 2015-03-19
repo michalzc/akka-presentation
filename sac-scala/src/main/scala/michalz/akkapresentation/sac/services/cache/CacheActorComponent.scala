@@ -15,12 +15,12 @@ trait CacheActorComponent {
     private val cache = cacheService("sacCache")
 
     def receive: Receive = {
-      case RequestSpecificAvailabilities(postCode, services) => {
-        val availabilities: Map[String, Availability] = (for {
+      case RequestSpecificAvailabilities(postCode, services, Some(requestId)) => {
+        val availabilities = (for {
           serviceId <- services
           serviceAvailability <- cache.getFromCache[(String, String), ServiceAvailability]((postCode, serviceId))
         } yield (serviceId, serviceAvailability)).toMap
-        sender ! FoundAvailabilities(postCode, availabilities)
+        sender ! FoundAvailabilities(postCode, availabilities, Some(requestId))
       }
 
       case FoundAvailability(postCode, serviceId, availability) => {

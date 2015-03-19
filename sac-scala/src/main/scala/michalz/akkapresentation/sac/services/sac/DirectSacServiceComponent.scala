@@ -32,7 +32,7 @@ trait DirectSacServiceComponent extends SacServiceComponent {
         combineAndSendSearchResults(listOfFutures, request.postCode)
       }
 
-      case RequestSpecificAvailabilities(postCode, serviceList) => {
+      case RequestSpecificAvailabilities(postCode, serviceList, None) => {
         val request = RequestAvailabilities(postCode)
         val listOfFutures = serviceList.map { serviceId =>
           finderActors.get(serviceId) match {
@@ -54,7 +54,7 @@ trait DirectSacServiceComponent extends SacServiceComponent {
         val availabilitiesMap = seqOfFoundAvailability.map { foundAvailability =>
           (foundAvailability.serviceId -> foundAvailability.availability)
         }.toMap
-        FoundAvailabilities(postCode, availabilitiesMap)
+        FoundAvailabilities(postCode, availabilitiesMap, None)
       }
       future pipeTo sender()
     }

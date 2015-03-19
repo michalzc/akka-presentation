@@ -25,7 +25,9 @@ class SacApiService extends HttpServiceActor with ActorLogging with Json4sJackso
   import context.become
 
   implicit def json4sJacksonFormats = Serialization.formats(NoTypeHints) + FieldSerializer[Availability]()
+
   implicit def timeout = Timeout(5.seconds)
+
   implicit val ec = context.dispatcher //try to remove!
 
   var sacServiceRef: ActorRef = _
@@ -52,24 +54,25 @@ class SacApiService extends HttpServiceActor with ActorLogging with Json4sJackso
     pathPrefix("availability") {
       get {
         path(Segment) { postCode =>
-          onComplete(ask(sacServiceRef, RequestAvailabilities(postCode)).mapTo[FoundAvailabilities]){
+          onComplete(ask(sacServiceRef, RequestAvailabilities(postCode)).mapTo[FoundAvailabilities]) {
             case Success(foundAvailabilities) => complete(foundAvailabilities)
             case Failure(ex) => complete(InternalServerError, s"An error has occured: ${ex.getMessage}")
           }
 
         } ~
-        path(Segment / Segment) { (postCode, serviceList) =>
-          val services = serviceList.split("[,\\.]").map(_.trim).filter(!_.isEmpty)
-          log.info("Service list: {}", services.mkString(", "))
-          if (services.isEmpty) {
-            complete(BadRequest, "Invalid service list")
-          } else {
-            onComplete(ask(sacServiceRef, RequestSpecificAvailabilities(postCode, services)).mapTo[FoundAvailabilities]) {
-              case Success(foundAvailabilities) => complete(foundAvailabilities)
-              case Failure(ex) => complete(InternalServerError, s"An error has occured: ${ex.getMessage}")
+          path(Segment / Segment) { (postCode, serviceList) =>
+            val services = serviceList.split("[,\\.]").map(_.trim).filter(!_.isEmpty)
+            log.info("Service list: {}", services.mkString(", "))
+            if (services.isEmpty) {
+              complete(BadRequest, "Invalid service list")
+            } else {
+              onComplete(ask(sacServiceRef, RequestSpecificAvailabilities(postCode, services, None))
+                .mapTo[FoundAvailabilities]) {
+                case Success(foundAvailabilities) => complete(foundAvailabilities)
+                case Failure(ex) => complete(InternalServerError, s"An error has occured: ${ex.getMessage}")
+              }
             }
           }
-        }
       }
     }
   }
