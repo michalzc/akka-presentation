@@ -17,21 +17,15 @@ import scala.concurrent.duration._
 /**
  * Created by michal on 15.03.15.
  */
-object SacApp extends App {
+object SacApp extends App with DirectSacServiceComponent with SacServiceRegistryComponent with CacheActorComponent 
+with EHCacheServiceComponent {
 
   implicit val timeout = Timeout(5.seconds)
   implicit val system = ActorSystem("SacSystem")
   val mongoHandler = new MongoHandler(new MongoDriver(system), List("localhost"))
 
-  val sacServiceComponent = new DirectSacServiceComponent with SacServiceRegistryComponent {
-    def system: ActorSystem = SacApp.system
-    def mongoHandler: MongoHandler = SacApp.mongoHandler
-  }
-
-  val cacheActorComponent = new CacheActorComponent with EHCacheServiceComponent
-
-  val cacheActorRef = system.actorOf(Props(cacheActorComponent.cacheActor), "sacCache")
-  val sacActorRef = system.actorOf(Props(sacServiceComponent.sacService), "sacService")
+  val cacheActorRef = system.actorOf(Props(cacheActor), "sacCache")
+  val sacActorRef = system.actorOf(Props(sacService), "sacService")
   val apiActorRef = system.actorOf(SacApiService.props, "apiService")
 
   IO(Http) ? Http.Bind(apiActorRef, interface = "0.0.0.0", port = 8000)

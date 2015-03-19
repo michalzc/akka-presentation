@@ -7,14 +7,13 @@ import org.specs2.specification.AfterAll
 /**
  * Created by michal on 19.03.15.
  */
-class EHCacheServiceSpec extends Specification with AfterAll {
-
+class EHCacheServiceSpec extends Specification with AfterAll with EHCacheServiceComponent {
+  
   type CacheKey = (String, String)
-  val ehCacheComponent = new EHCacheServiceComponent {}
-  val cacheService = ehCacheComponent.cacheService("ehCacheServiceSpec")
+  val cache = cacheService("ehCacheServiceSpec")
 
   def afterAll = {
-    cacheService.shutdownCache
+    cache.shutdownCache
   }
 
   "this is specification for ehcache service" >> {
@@ -28,14 +27,14 @@ class EHCacheServiceSpec extends Specification with AfterAll {
       val value2 = SearchInProgress
       val value3 = ServiceNotFound
 
-      cacheService.putToCache(key1, value1)
-      cacheService.putToCache(key2, value2)
-      cacheService.putToCache(key3, value3)
+      cache.putToCache(key1, value1)
+      cache.putToCache(key2, value2)
+      cache.putToCache(key3, value3)
 
 
-      cacheService.getFromCache(key1) must beSome(value1)
-      cacheService.getFromCache(key2) must beSome(value2)
-      cacheService.getFromCache(key3) must beSome(value3)
+      cache.getFromCache(key1) must beSome(value1)
+      cache.getFromCache(key2) must beSome(value2)
+      cache.getFromCache(key3) must beSome(value3)
 
     }
   }

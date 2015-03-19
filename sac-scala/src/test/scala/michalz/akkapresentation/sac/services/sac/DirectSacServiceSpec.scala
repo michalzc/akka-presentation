@@ -18,7 +18,7 @@ import scala.util.Success
 /**
  * Created by michal on 16.03.15.
  */
-class DirectSacServiceSpec extends Specification with AfterAll {
+class DirectSacServiceSpec extends Specification with AfterAll with TestDirectSacServiceComponent {
 
   val testServiceName = "TestService"
   val testServiceId = "9999"
@@ -28,8 +28,7 @@ class DirectSacServiceSpec extends Specification with AfterAll {
   implicit val system = ActorSystem("TestSystem")
   implicit val timeout = Timeout(Duration(5, "seconds"))
 
-  val testSacServiceComponent = new TestDirectSacServiceComponent(system, testServiceId, testServiceName)
-  val sacServiceRef = TestActorRef(testSacServiceComponent.sacService)
+  val sacServiceRef = TestActorRef(sacService)
 
 
   override def afterAll = {
@@ -66,16 +65,17 @@ class DirectSacServiceSpec extends Specification with AfterAll {
 
 }
 
-sealed class TestDirectSacServiceComponent(val system: ActorSystem, val testServiceId: String, val testServiceName: String)
-  extends DirectSacServiceComponent with ServiceRegistryComponent {
-
+trait TestDirectSacServiceComponent extends DirectSacServiceComponent with ServiceRegistryComponent {
+  
+  def system: ActorSystem
+  def testServiceId: String
+  def testServiceName: String
+  
   def serviceRegistry = new ServiceRegistry {
     override def services = Seq(
       new Finder {
         def actorSystem = system
-
         def serviceId = testServiceId
-
         def serviceName = testServiceName
 
         def serviceAvailability(postCode: String) =
