@@ -4,6 +4,7 @@ import akka.actor.{ActorSystem, Props}
 import akka.io.IO
 import akka.pattern.ask
 import akka.util.Timeout
+import michalz.akkapresentation.sac.services.cache.{EHCacheServiceComponent, CacheActorComponent}
 import michalz.akkapresentation.sac.services.finders.MongoHandler
 import michalz.akkapresentation.sac.services.sac.DirectSacServiceComponent
 import michalz.akkapresentation.sac.services.serviceregistry.SacServiceRegistryComponent
@@ -27,6 +28,11 @@ object SacApp extends App {
     def mongoHandler: MongoHandler = SacApp.mongoHandler
   }
 
+  val cacheActorComponent = new CacheActorComponent with EHCacheServiceComponent{
+    val cacheName = "sacCache"
+  }
+
+  val cacheActorRef = system.actorOf(Props(cacheActorComponent.cacheActor), "sacCache")
   val sacActorRef = system.actorOf(Props(sacServiceComponent.sacService), "sacService")
   val apiActorRef = system.actorOf(SacApiService.props, "apiService")
 

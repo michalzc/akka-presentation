@@ -55,6 +55,7 @@ lazy val sacScala = (project in file("sac-scala"))
       "org.apache.logging.log4j" % "log4j-core" % "2.1",
       "org.apache.logging.log4j" % "log4j-slf4j-impl" % "2.1",
       "org.apache.commons" % "commons-csv" % "1.1",
+      "net.sf.ehcache" % "ehcache" % "2.9.1",
 
       //test dependencies
       "io.spray" %% "spray-testkit" % "1.3.2" % "test" exclude("org.specs2", "specs2_2.11"),
